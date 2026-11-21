@@ -126,17 +126,31 @@ export function Header({ categories }: HeaderProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20 gap-3 lg:gap-6">
           
-          {/* Official Brand Logo (Clean with rounded edges) */}
+          {/* Official Brand Logo with Rounded Square Glass Card & Gaussian Blur */}
           <Link href="/" className="flex items-center shrink-0 group">
-            <div className="relative h-12 w-24 sm:w-28 flex items-center justify-start rounded-2xl overflow-hidden group-hover:scale-105 transition-transform duration-300">
-              <Image
-                src="/logo.png"
-                alt="EBEE.PK Official Logo"
-                fill
-                priority
-                sizes="(max-width: 640px) 96px, 112px"
-                className="object-cover rounded-2xl"
-              />
+            <div className="relative h-12 px-3.5 rounded-2xl bg-white p-1.5 border border-slate-200/90 shadow-[0_4px_16px_rgba(0,0,0,0.4),0_1px_0_rgba(255,255,255,1)_inset,0_3px_0_#CBD5E1] hover:shadow-[0_12px_28px_rgba(36,123,255,0.35),0_0_20px_rgba(36,123,255,0.25),0_3px_0_#247BFF] hover:border-[#247BFF]/60 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-all duration-300">
+              
+              {/* Gaussian Blur Glow System matching Product Cards */}
+              <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl z-0">
+                {/* Top-Left Diagonal Deep Blue Gaussian Node */}
+                <div className="absolute -top-6 -left-6 w-20 h-20 rounded-full bg-[#1e488f]/35 blur-[16px] group-hover:scale-125 transition-transform duration-500" />
+                {/* Bottom-Right Diagonal Deep Blue Gaussian Node */}
+                <div className="absolute -bottom-6 -right-6 w-20 h-20 rounded-full bg-[#204d96]/40 blur-[18px] group-hover:scale-125 transition-transform duration-500" />
+                {/* Central Luminous White Glow Node */}
+                <div className="absolute inset-1 rounded-xl bg-white/75 blur-[10px]" />
+              </div>
+
+              {/* Logo Image */}
+              <div className="relative h-8 w-24 sm:w-28 z-10 flex items-center justify-center">
+                <Image
+                  src="/logo-cropped.png"
+                  alt="EBEE.PK Official Logo"
+                  fill
+                  priority
+                  sizes="(max-width: 640px) 96px, 112px"
+                  className="object-contain"
+                />
+              </div>
             </div>
           </Link>
 
