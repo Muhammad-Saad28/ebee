@@ -22,7 +22,13 @@ import {
   Smartphone,
   Laptop,
   Shirt,
-  Flame
+  Flame,
+  User,
+  ShieldCheck,
+  Home,
+  Dumbbell,
+  Baby,
+  Cigarette
 } from 'lucide-react'
 import { useCartStore } from '@/store/cartStore'
 import { useWishlistStore } from '@/store/wishlistStore'
@@ -105,14 +111,40 @@ export function Header({ categories }: HeaderProps) {
   const cartCount = mounted ? getTotalItems() : 0
   const wishlistCount = mounted ? getWishlistTotal() : 0
 
+  function getDynamicCategoryIcon(slug: string) {
+    const s = slug.toLowerCase()
+    if (s.includes('phone') || s.includes('tablet')) return Smartphone
+    if (s.includes('computer') || s.includes('laptop')) return Laptop
+    if (s.includes('camera')) return Camera
+    if (s.includes('watch') || s.includes('wearable')) return Watch
+    if (s.includes('fashion')) return Shirt
+    if (s.includes('home') || s.includes('living')) return Home
+    if (s.includes('auto') || s.includes('car')) return Car
+    if (s.includes('sport') || s.includes('fitness')) return Dumbbell
+    if (s.includes('kid') || s.includes('toy')) return Baby
+    if (s.includes('tobacco')) return Cigarette
+    if (s.includes('appliance')) return Zap
+    return Layers
+  }
+
+  const dynamicCatalogItems = categories && categories.length > 0
+    ? categories.map((cat) => ({
+        name: cat.name,
+        slug: cat.slug,
+        icon: getDynamicCategoryIcon(cat.slug),
+        desc: cat.product_count !== undefined ? `${cat.product_count} products` : 'Browse collection',
+      }))
+    : [
+        { name: 'Automotive', slug: 'automotive', icon: Car, desc: 'Car accessories & parts' },
+        { name: 'Fashion', slug: 'fashion', icon: Shirt, desc: 'Jewelry & accessories' },
+        { name: 'Home And Living', slug: 'home-and-living', icon: Home, desc: 'Home essentials' },
+        { name: 'Computer And Laptop', slug: 'computer-and-laptop', icon: Laptop, desc: 'Gadgets & peripherals' },
+        { name: 'Home Appliances', slug: 'home-appliances', icon: Zap, desc: 'Smart appliances' },
+      ]
+
   const catalogItems = [
     { name: 'All Products (Full Catalog)', slug: '', icon: Layers, desc: 'Browse complete inventory' },
-    { name: 'Wireless Audio & Sound', slug: 'audio', icon: Headphones, desc: 'Hi-Fi acoustics & earbuds' },
-    { name: 'Smart Watches & Bands', slug: 'wearables', icon: Watch, desc: 'AMOLED sapphire displays' },
-    { name: 'Automobile & Car Gear', slug: 'automobiles', icon: Car, desc: 'Compressors, mounts & tools' },
-    { name: 'Security Cameras & Vision', slug: 'cameras', icon: Camera, desc: '1080P HD wireless night vision' },
-    { name: 'Phones & Tech Accessories', slug: 'phones-and-accessories', icon: Smartphone, desc: 'Cables, chargers & holders' },
-    { name: 'Computers & Desk Gear', slug: 'computer-and-laptop', icon: Laptop, desc: 'Peripherals, cooling & mounts' },
+    ...dynamicCatalogItems,
   ]
 
   return (
@@ -321,6 +353,16 @@ export function Header({ categories }: HeaderProps) {
 
           {/* Right Action Glass Pods */}
           <div className="flex items-center gap-2.5">
+            {/* Admin / Portal Login Button */}
+            <Link
+              href="/admin"
+              className="relative hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.05] hover:bg-[#247BFF]/15 border border-white/[0.1] hover:border-[#247BFF]/40 text-[#c2c6d7] hover:text-[#BBD8FF] text-xs font-mono font-medium transition-all duration-200 shadow-sm"
+              title="Admin & POS Portal"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-[#247BFF]" />
+              <span>Admin Login</span>
+            </Link>
+
             {/* Glass Wishlist Pod */}
             <Link
               href="/account/wishlist"
@@ -422,6 +464,17 @@ export function Header({ categories }: HeaderProps) {
                 className="py-2 px-3 rounded-lg hover:bg-white/[0.08] hover:text-white flex items-center justify-between"
               >
                 <span>Contact</span>
+                <ArrowRight className="w-3.5 h-3.5 text-[#247BFF]" />
+              </Link>
+              <Link
+                href="/admin"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="py-2.5 px-3 rounded-xl bg-[#247BFF]/15 border border-[#247BFF]/30 text-[#BBD8FF] hover:bg-[#247BFF]/25 font-mono text-xs font-semibold flex items-center justify-between mt-2"
+              >
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-[#247BFF]" />
+                  <span>Admin & POS Portal</span>
+                </div>
                 <ArrowRight className="w-3.5 h-3.5 text-[#247BFF]" />
               </Link>
             </div>

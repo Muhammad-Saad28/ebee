@@ -159,14 +159,22 @@ export async function getCategories(): Promise<Category[]> {
     // Also fetch one representative product image for each category if category.image_url is empty
     const { data: sampleProducts } = await supabase
       .from('products')
-      .select('category_id, product_images(url)')
-      .limit(60)
+      .select('category_id, category_name, subcategory_name, product_images(url)')
+      .limit(500)
 
     const catThumbMap: Record<string, string> = {}
+    const subcatsMap: Record<string, Set<string>> = {}
+
     if (sampleProducts) {
       for (const p of sampleProducts) {
         if (p.category_id && p.product_images && p.product_images.length > 0 && !catThumbMap[p.category_id]) {
           catThumbMap[p.category_id] = p.product_images[0].url
+        }
+        if (p.category_id && p.subcategory_name) {
+          if (!subcatsMap[p.category_id]) {
+            subcatsMap[p.category_id] = new Set()
+          }
+          subcatsMap[p.category_id].add(p.subcategory_name)
         }
       }
     }
@@ -176,9 +184,12 @@ export async function getCategories(): Promise<Category[]> {
       if (Array.isArray(cat.product_count) && cat.product_count[0]?.count !== undefined) {
         count = cat.product_count[0].count
       }
+      const subs = subcatsMap[cat.id] ? Array.from(subcatsMap[cat.id]).sort() : []
+
       return {
         ...cat,
         product_count: count,
+        subcategories: subs,
         image_url: cat.image_url || catThumbMap[cat.id] || null,
       } as Category
     })

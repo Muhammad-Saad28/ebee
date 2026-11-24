@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# scraper cache & local binary dumps
+cache/
+cache_wishhub/
+*.xlsx
+.temp/
