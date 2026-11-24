@@ -23,6 +23,10 @@
 # misc
 .DS_Store
 *.pem
+*.py
+*.jsonl
+*.csv
+
 
 # debug
 npm-debug.log*
